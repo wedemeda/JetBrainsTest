@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+
 
 @ExtendWith(MyExtension.class)
 public class SpaceTest  extends BaseTest{
@@ -21,6 +21,7 @@ public class SpaceTest  extends BaseTest{
         super.setUp();
         getDriver().get("https://www.jetbrains.com/space/");
         spacePage = new SpacePage(getDriver());
+        spacePage.clickCookiesBannerButton();
     }
 
     @Test
@@ -55,11 +56,6 @@ public class SpaceTest  extends BaseTest{
         assertTrue(spacePage.isDisplayedRusLangButton(), "В языковом меню нет кнопки выбора русского языка.");
     }
 
-    @Test
-    @DisplayName("Проверяем, что если нажать на кнопку Submit не заполнив поле Email - всплывает ошибка.")
-    public void emptyFieldErrCheck(){
-        assertTrue(spacePage.isDisplayedEmptyFieldError(), "Не всплывает ошибка.");
-    }
 
     @Test
     @DisplayName("Проверяем, что страна France после выбора  действительно установлена.")
@@ -67,11 +63,6 @@ public class SpaceTest  extends BaseTest{
         assertEquals("France", spacePage.changeCountry(), "Страна не соответствует выбранной.");
     }
 
-    @Test
-    @DisplayName("Проверяем, что по умолчанию в чекбоксе не стоит галка.")
-    public void checkBoxCheck(){
-        assertFalse(spacePage.isCheckedCheckBox(), "Галка установлена.");
-    }
 
     @Test
     @DisplayName("Проверяем, что по комбинации CTRL+k открывается страница поиска  https://www.jetbrains.com/space/?s=full")

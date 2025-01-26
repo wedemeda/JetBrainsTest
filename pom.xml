@@ -24,7 +24,7 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.5.2</version>
+            <version>5.8.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
@@ -48,30 +48,30 @@
             <version>${allure.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>4.11.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-junit5</artifactId>
-            <version>${allure.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params -->
+            <dependency>
+               <groupId>org.seleniumhq.selenium</groupId>
+               <artifactId>selenium-java</artifactId>
+               <version>4.20.0</version>
+           </dependency>
+           <dependency>
+               <groupId>io.qameta.allure</groupId>
+               <artifactId>allure-junit5</artifactId>
+               <version>${allure.version}</version>
+               <scope>test</scope>
+           </dependency>
+           <dependency>
+               <groupId>org.junit.jupiter</groupId>
+               <artifactId>junit-jupiter-api</artifactId>
+               <version>${junit.version}</version>
+               <scope>test</scope>
+           </dependency>
+           <dependency>
+               <groupId>org.junit.jupiter</groupId>
+               <artifactId>junit-jupiter-engine</artifactId>
+               <version>${junit.version}</version>
+               <scope>test</scope>
+           </dependency>
+           <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-params -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>

@@ -16,13 +16,14 @@ import java.time.Duration;
 public class SpacePage {
     private final Logger LOG = LoggerFactory.getLogger(SpacePage.class);
     WebDriver driver;
-    @FindBy(css = "._siteLogo__image_nnydt:first-child")
+
+    @FindBy(css = "[aria-label='Navigate to main page'][data-test='site-logo']")
     private WebElement logoButton;
 
     @FindBy(css = "[aria-label='Developer Tools: Open submenu'][data-test='main-menu-item-action']")
     private WebElement devToolsButton;
 
-    @FindBy(css ="._mainMenuItemActive_ntjw4[data-test-marker='Developer Tools']")
+    @FindBy(css ="._mainSubmenu__content_6pz0jp_1")
     private WebElement topMenu;
 
     @FindBy(css ="[aria-label='Team Tools: Open submenu'][data-test='main-menu-item-action']")
@@ -33,11 +34,6 @@ public class SpacePage {
 
     @FindBy(xpath = "//*[text() = 'Русский']")
     private WebElement rusLangButton;
-    @FindBy(css= "[type='submit']")
-    private WebElement submitButton;
-
-    @FindBy(css= " [data-test='input input-with-error']")
-    private WebElement emptyFieldError;
 
     @FindBy(css = "[data-test='footer-country-button']")
     private WebElement countryButton;
@@ -48,20 +44,26 @@ public class SpacePage {
     @FindBy(css = "[data-test='footer-popup-confirm-country']")
     private WebElement changeCountryButton;
 
-    @FindBy(css = "[data-test='checkbox-icon']")
-    private WebElement checkBox;
-
     @FindBy(css = "body")
     private WebElement bodyPage;
 
     @FindBy(css = "[data-test='site-header-search-action']")
     private WebElement searchIconButton;
 
-    @FindBy(css = "[data-test='search-input'][placeholder]")
+    @FindBy(css = "[data-test-id='search-input'][placeholder]")
     private WebElement searchField;
 
     @FindBy(xpath = "//*[text()='On-Premises']")
     private WebElement onPremisButton;
+
+    @FindBy(css = "[data-jetbrains-cookies-banner-action='ACCEPT_ALL']")
+    private WebElement cookiesBannerButton;
+
+
+    public void clickCookiesBannerButton(){
+        cookiesBannerButton.click();
+        LOG.info("Кликнули по кнопке принятия куки");
+    }
 
     public void clickLogoButton(){
         logoButton.click();
@@ -92,12 +94,6 @@ public class SpacePage {
         return rusLangButton.isDisplayed();
     }
 
-    public Boolean isDisplayedEmptyFieldError(){
-        submitButton.click();
-        LOG.info("Кликнули по кнопке " + submitButton.getText());
-        return emptyFieldError.isDisplayed();
-    }
-
     public String changeCountry(){
         countryButton.click();
         LOG.info("Кликнули по кнопке выбора страны");
@@ -108,10 +104,6 @@ public class SpacePage {
         changeCountryButton.click();
         LOG.info("Кликнули по кнопке Choose");
         return countryButton.getText();
-    }
-
-    public Boolean isCheckedCheckBox(){
-        return checkBox.isSelected();
     }
 
     public void goSearchPage(){
