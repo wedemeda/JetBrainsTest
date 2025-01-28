@@ -1,5 +1,6 @@
 package com.example.jetbrainstest.pages.spacepages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -60,11 +61,13 @@ public class SpacePage {
     private WebElement cookiesBannerButton;
 
 
+    @Step("Кликнули по кнопке принятия куки")
     public void clickCookiesBannerButton(){
         cookiesBannerButton.click();
         LOG.info("Кликнули по кнопке принятия куки");
     }
 
+    @Step("Кликнули по кнопке лого")
     public void clickLogoButton(){
         logoButton.click();
         LOG.info("Кликнули по кнопке лого");
@@ -88,6 +91,7 @@ public class SpacePage {
         return teamToolsButton.getCssValue("opacity");
     }
 
+    @Step("Кликнули по кнопке выбора языка")
     public Boolean isDisplayedRusLangButton(){
         langMenuButton.click();
         LOG.info("Кликнули по кнопке выбора языка");
@@ -106,6 +110,7 @@ public class SpacePage {
         return countryButton.getText();
     }
 
+    @Step("Нажали комбинацию клавиш Ctrl+K")
     public void goSearchPage(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         bodyPage.sendKeys(Keys.CONTROL + "k");
@@ -113,6 +118,7 @@ public class SpacePage {
         wait.until(ExpectedConditions.urlToBe("https://www.jetbrains.com/space/?s=full"));
     }
 
+    @Step("Кликнули по иконке лупы")
     public String getSearchFieldText(){
         searchIconButton.click();
         LOG.info("Кликнули по иконке лупы");
