@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 @ExtendWith(MyExtension.class)
 public class SpaceTest extends BaseTest {
     private SpacePage spacePage;
@@ -40,13 +39,16 @@ public class SpaceTest extends BaseTest {
     @Test
     @DisplayName("Проверяем, что при нажатии на кнопку Developer Tools отображается меню")
     public void displayedMenuAfterClickCheck() {
-        assertTrue(spacePage.isDisplTopMenu(), "Меню не отображается");
+        assertTrue(spacePage.isDisplTopMenu(),
+                "Меню не отображается");
     }
 
     @Test
-    @DisplayName("Проверям, что при наведении фокуса на кнопку Team Tools, её текст становится белого цвета (Отключается прозрачность).")
+    @DisplayName("Проверям, что при наведении фокуса на кнопку Team Tools, " +
+            "её текст становится белого цвета (Отключается прозрачность).")
     public void onFocusColorTeamToolButtonCheck() {
-        assertEquals("1", spacePage.getOpacityOnFocusTeamToolsButton(), "Кнопка Developer Team Tools осталась серого цвета.");
+        assertEquals("1", spacePage.getOpacityOnFocusTeamToolsButton(),
+                "Кнопка Developer Team Tools осталась серого цвета.");
     }
 
     @Test
@@ -55,30 +57,31 @@ public class SpaceTest extends BaseTest {
         assertTrue(spacePage.isDisplayedRusLangButton(), "В языковом меню нет кнопки выбора русского языка.");
     }
 
-
     @Test
     @DisplayName("Проверяем, что страна France после выбора  действительно установлена.")
     public void countryCheck() {
         assertEquals("France", spacePage.changeCountry(), "Страна не соответствует выбранной.");
     }
 
-
     @Test
     @DisplayName("Проверяем, что по комбинации CTRL+k открывается страница поиска  https://www.jetbrains.com/space/?s=full")
     public void searchPageCheck() {
         spacePage.goSearchPage();
-        assertEquals("https://www.jetbrains.com/space/?s=full", spacePage.getCurrUrl(), "Не перешли на https://www.jetbrains.com/space/?s=full");
+        assertEquals("https://www.jetbrains.com/space/?s=full", spacePage.getCurrUrl(),
+                "Не перешли на https://www.jetbrains.com/space/?s=full");
     }
 
     @Test
     @DisplayName("Проверям текст подсказки  в строке поиска")
     public void textSearchFieldCheck() {
-        assertEquals("Ctrl+K for advanced search", spacePage.getSearchFieldText(), "Текст подсказки не соответсвует проверяемому.");
+        assertEquals("Ctrl+K for advanced search", spacePage.getSearchFieldText(),
+                "Текст подсказки не соответсвует проверяемому.");
     }
 
     @Test
     @DisplayName("Проверяем, что кнопка On-Premises прозрачная.")
     public void colorOnPremisButtonCheck() {
-        assertEquals("rgba(0, 0, 0, 0)", spacePage.getColorOnPremisButton(), "Кнопка On-Premises не прозрачная.");
+        assertEquals("rgba(0, 0, 0, 0)", spacePage.getColorOnPremisButton(),
+                "Кнопка On-Premises не прозрачная.");
     }
 }
