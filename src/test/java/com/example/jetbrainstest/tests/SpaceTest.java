@@ -84,4 +84,11 @@ public class SpaceTest extends BaseTest {
         assertEquals("rgba(0, 0, 0, 0)", spacePage.getColorOnPremisButton(),
                 "Кнопка On-Premises не прозрачная.");
     }
+
+    @Test
+    @DisplayName("Проверяем, что после нажатия на кнопку 'Learn how to review code from the IDE', " +
+            "начинает воспроизводиться видео")
+    public void videoPlayedCheck() {
+        assertTrue(spacePage.isLernVideoPlayed(), "Видео не воспроизводится.");
+    }
 }

@@ -15,6 +15,8 @@ import java.time.Duration;
 // page_url = https://www.jetbrains.com/space
 public class SpacePage {
 
+
+    // #movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > button
     private final AllureLogger LOG = new AllureLogger(LoggerFactory.getLogger(SpacePage.class));
     WebDriver driver;
 
@@ -60,6 +62,14 @@ public class SpacePage {
     @FindBy(css = "[data-jetbrains-cookies-banner-action='ACCEPT_ALL']")
     private WebElement cookiesBannerButton;
 
+    @FindBy(xpath = "//button[contains(text(), 'Learn how to review code from the IDE')]")
+    private WebElement learnVideoButton;
+
+    @FindBy(xpath = "//iframe[contains(@src, 'youtube.com/embed')]")
+    private WebElement iframeYoPlayer;
+
+    @FindBy(css = "button[data-title-no-tooltip='Pause']")
+    private WebElement pauseButton;
 
     public void clickCookiesBannerButton() {
         cookiesBannerButton.click();
@@ -97,7 +107,7 @@ public class SpacePage {
 
     public String changeCountry() {
         countryButton.click();
-        LOG.info("Кликнули по кнопке выбора страны");
+        LOG.infoWithScreenshot("Кликнули по кнопке выбора страны");
         changeCountryField.sendKeys("France");
         LOG.info("Напечатали в поле ввода: France");
         changeCountryField.sendKeys(Keys.ENTER);
@@ -126,6 +136,14 @@ public class SpacePage {
 
     public String getCurrUrl() {
         return driver.getCurrentUrl();
+    }
+
+    public Boolean isLernVideoPlayed() {
+        learnVideoButton.click();
+        LOG.info("Кликнули по иконке, вызывающей обучающее видео");
+        driver.switchTo().frame(iframeYoPlayer);
+        LOG.info("Переключаемся в iframe с видео плеером");
+        return pauseButton.isDisplayed();
     }
 
     public SpacePage(WebDriver driver) {
