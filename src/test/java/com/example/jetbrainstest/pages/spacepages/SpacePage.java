@@ -4,6 +4,7 @@ import com.example.jetbrainstest.AllureLogger;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,10 +16,9 @@ import java.time.Duration;
 // page_url = https://www.jetbrains.com/space
 public class SpacePage {
 
-
-    // #movie_player > div.ytp-chrome-bottom > div.ytp-chrome-controls > div.ytp-left-controls > button
     private final AllureLogger LOG = new AllureLogger(LoggerFactory.getLogger(SpacePage.class));
     WebDriver driver;
+    Actions actions;
 
     @FindBy(css = "[aria-label='Navigate to main page'][data-test='site-logo']")
     private WebElement logoButton;
@@ -71,6 +71,12 @@ public class SpacePage {
     @FindBy(css = "button[data-title-no-tooltip='Pause']")
     private WebElement pauseButton;
 
+    @FindBy(css = "div.wt-col-3:nth-child(1)")
+    private WebElement secureBlock;
+
+    @FindBy(css = "a[class*='wt-link']")
+    private WebElement linkMoreSpace;
+
     public void clickCookiesBannerButton() {
         cookiesBannerButton.click();
         LOG.info("Кликнули по кнопке принятия куки");
@@ -102,6 +108,8 @@ public class SpacePage {
     public Boolean isDisplayedRusLangButton() {
         langMenuButton.click();
         LOG.info("Кликнули по кнопке выбора языка");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOf(rusLangButton));
         return rusLangButton.isDisplayed();
     }
 
@@ -146,8 +154,19 @@ public class SpacePage {
         return pauseButton.isDisplayed();
     }
 
+    public String getGradientBackground() {
+        onPremisButton.click();
+        LOG.info("Кликнули по кнопке " + onPremisButton.getText());
+        actions.moveToElement(linkMoreSpace).perform();
+        LOG.info("Скроллим к блоку " + secureBlock.getText());
+        actions.moveToElement(secureBlock).perform();
+        LOG.info("Установили фокус на блоке " + secureBlock.getText());
+        return secureBlock.getCssValue("background-image");
+    }
+
     public SpacePage(WebDriver driver) {
         this.driver = driver;
+        this.actions = new Actions(driver);
         PageFactory.initElements(driver, this);
     }
 }
