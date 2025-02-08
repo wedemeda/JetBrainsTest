@@ -77,6 +77,24 @@ public class SpacePage {
     @FindBy(css = "a[class*='wt-link']")
     private WebElement linkMoreSpace;
 
+    @FindBy(css = "svg[class*='space-text-white']")
+    private WebElement spaceButton;
+
+    @FindBy(css = "a.menu-second__button:nth-child(2)")
+    private WebElement signInButton;
+
+    @FindBy(css = "[data-test-id='… or use another email account']")
+    private WebElement useEmailAccButton;
+
+    @FindBy(css = "[data-test-id='email-input']")
+    private WebElement emailInput;
+
+    @FindBy(css = "[data-test-id='Continue with this email']")
+    private WebElement emailSubmitButton;
+
+    @FindBy(css = "[data-test-id='validationError']")
+    private WebElement validErrorText;
+
     public void clickCookiesBannerButton() {
         cookiesBannerButton.click();
         LOG.info("Кликнули по кнопке принятия куки");
@@ -156,12 +174,33 @@ public class SpacePage {
 
     public String getGradientBackground() {
         onPremisButton.click();
-        LOG.info("Кликнули по кнопке " + onPremisButton.getText());
+        LOG.info("Кликнули по кнопке On-Premises");
         actions.moveToElement(linkMoreSpace).perform();
         LOG.info("Скроллим к блоку " + secureBlock.getText());
         actions.moveToElement(secureBlock).perform();
         LOG.info("Установили фокус на блоке " + secureBlock.getText());
         return secureBlock.getCssValue("background-image");
+    }
+
+    public void spaceButtonClick() {
+        spaceButton.click();
+        LOG.info("Кликнули по кнопке Space");
+    }
+
+    public void setEmailInput(String email) {
+        emailInput.sendKeys(email);
+        LOG.info("Ввели невалидный Email " + email + " в поле ввода");
+        emailSubmitButton.click();
+        LOG.info("Нажали на кнопку Continue with this email");
+    }
+
+    public String getErrorTextAfterNotValidEmailInput(String email) {
+        signInButton.click();
+        LOG.info("Нажали на кнопку Sign in");
+        useEmailAccButton.click();
+        LOG.info("Нажали на кнопку … or use another email account");
+        setEmailInput(email);
+        return validErrorText.getText();
     }
 
     public SpacePage(WebDriver driver) {

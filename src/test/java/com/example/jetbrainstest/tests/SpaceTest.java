@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -88,5 +90,20 @@ public class SpaceTest extends BaseTest {
     @DisplayName("Проверяем, что при установке фокуса на блоке 'Keep complete control over your data in a secure environment' " + "страницы https://www.jetbrains.com/space/download/  появляется градиент фона.")
     public void gradientBackgroundCheck() {
         assertNotEquals("none", spacePage.getGradientBackground(), "Градиент фона не появляется.");
+    }
+
+    @Test
+    @DisplayName("Проверяем, что после нажатия на кнопкy Space происходит загрузка страницы https://www.jetbrains.com/space/")
+    public void spacePageCheck() {
+        spacePage.spaceButtonClick();
+        assertEquals("https://www.jetbrains.com/space/", spacePage.getCurrUrl(), "Не перешли на https://www.jetbrains.com/space/");
+    }
+
+    @ParameterizedTest(name = "#{index} - проверка с email {0}")
+    @CsvSource({"test", "test@", "test@test"})
+    @DisplayName("Проверяем, что при вводе не валидного email отображается текст ошибки: Please enter a valid email address")
+    public void validErrorTextCheck(String email) {
+        assertEquals("Please enter a valid email address",
+                spacePage.getErrorTextAfterNotValidEmailInput(email), "Текст сообщения некорректен");
     }
 }
