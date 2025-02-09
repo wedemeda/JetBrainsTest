@@ -95,6 +95,9 @@ public class SpacePage {
     @FindBy(css = "[data-test-id='validationError']")
     private WebElement validErrorText;
 
+    @FindBy(css = "[data-test-id='1A3-B56']")
+    private WebElement inputTextField;
+
     public void clickCookiesBannerButton() {
         cookiesBannerButton.click();
         LOG.info("Кликнули по кнопке принятия куки");
@@ -188,18 +191,33 @@ public class SpacePage {
     }
 
     public void setEmailInput(String email) {
+        signInButton.click();
+        LOG.info("Нажали на кнопку Sign in");
+        useEmailAccButton.click();
+        LOG.info("Нажали на кнопку … or use another email account");
         emailInput.sendKeys(email);
-        LOG.info("Ввели невалидный Email " + email + " в поле ввода");
+        LOG.info("Ввели email " + email + " в поле ввода");
         emailSubmitButton.click();
         LOG.info("Нажали на кнопку Continue with this email");
     }
 
     public String getErrorTextAfterNotValidEmailInput(String email) {
+        setEmailInput(email);
+        return validErrorText.getText();
+    }
+
+    public Boolean isInputTextField(String email) {
+        setEmailInput(email);
+        return inputTextField.isDisplayed();
+    }
+
+    public String getErrorTextAfterEmptyEmailInput() {
         signInButton.click();
         LOG.info("Нажали на кнопку Sign in");
         useEmailAccButton.click();
         LOG.info("Нажали на кнопку … or use another email account");
-        setEmailInput(email);
+        emailSubmitButton.click();
+        LOG.info("Нажали на кнопку Continue with this email");
         return validErrorText.getText();
     }
 

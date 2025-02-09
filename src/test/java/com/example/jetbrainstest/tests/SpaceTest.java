@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -102,8 +103,23 @@ public class SpaceTest extends BaseTest {
     @ParameterizedTest(name = "#{index} - проверка с email {0}")
     @CsvSource({"test", "test@", "test@test"})
     @DisplayName("Проверяем, что при вводе не валидного email отображается текст ошибки: Please enter a valid email address")
-    public void validErrorTextCheck(String email) {
+    public void errorTextAfterNotValidEmailCheck(String email) {
         assertEquals("Please enter a valid email address",
                 spacePage.getErrorTextAfterNotValidEmailInput(email), "Текст сообщения некорректен");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.example.jetbrainstest.EmailGenerator#randomEmails")
+    @DisplayName("Проверка, что при вводе валидного email отображается поле для ввода кода подтверждения")
+    public void inputTextFieldCheck(String email) {
+        assertTrue(spacePage.isInputTextField(email), "Поле для ввода кода подтверждения не отображается");
+    }
+
+    @Test
+    @DisplayName("Проверяем, что при нажатии на кнопку Continue with this email с пустым полем email " +
+            "отображается текст ошибки: Failed to check the email. Please try again later.")
+    public void errorTextAfterEmptyEmailCheck() {
+        assertEquals("Failed to check the email. Please try again later.",
+                spacePage.getErrorTextAfterEmptyEmailInput(), "Текст сообщения некорректен");
     }
 }
