@@ -104,8 +104,7 @@ public class SpaceTest extends BaseTest {
     @CsvSource({"test", "test@", "test@test"})
     @DisplayName("Проверяем, что при вводе не валидного email отображается текст ошибки: Please enter a valid email address")
     public void errorTextAfterNotValidEmailCheck(String email) {
-        assertEquals("Please enter a valid email address",
-                spacePage.getErrorTextAfterNotValidEmailInput(email), "Текст сообщения некорректен");
+        assertEquals("Please enter a valid email address", spacePage.getErrorTextAfterNotValidEmailInput(email), "Текст сообщения некорректен");
     }
 
     @ParameterizedTest
@@ -116,24 +115,20 @@ public class SpaceTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Проверяем, что при нажатии на кнопку Continue with this email с пустым полем email " +
-            "отображается текст ошибки: Failed to check the email. Please try again later.")
+    @DisplayName("Проверяем, что при нажатии на кнопку Continue with this email с пустым полем email " + "отображается текст ошибки: Failed to check the email. Please try again later.")
     public void errorTextAfterEmptyEmailCheck() {
-        assertEquals("Failed to check the email. Please try again later.",
-                spacePage.getErrorTextAfterEmptyEmailInput(), "Текст сообщения некорректен");
+        assertEquals("Failed to check the email. Please try again later.", spacePage.getErrorTextAfterEmptyEmailInput(), "Текст сообщения некорректен");
     }
 
     @Test
-    @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, автоматически начинается воспроизведение следующего видео")
+    @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, " + "автоматически начинается воспроизведение следующего видео")
     public void autoPlayVideoCheck() throws InterruptedException {
         spacePage.goToSpaceLernPage();
-        assertEquals("Adding Content to a Git Repository", spacePage.getTitleVideo(),
-                "Второе видео не начало воспроизводиться");
+        assertEquals("Adding Content to a Git Repository", spacePage.getTitleVideo(), "Второе видео не начало воспроизводиться");
     }
 
     @Test
-    @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, при выключенном ползунке autoplay " +
-            "не начинается автоматическое воспроизведение следующего видео")
+    @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, при выключенном ползунке autoplay " + "не начинается автоматическое воспроизведение следующего видео")
     public void autoNotPlayVideoCheck() throws InterruptedException {
         spacePage.goToSpaceLernPage();
         assertNull(spacePage.getEmtyTitleVideo(), "Второе видео начало воспроизводиться");
@@ -143,5 +138,17 @@ public class SpaceTest extends BaseTest {
     @DisplayName("Проверяем, что на странице https://www.jetbrains.com/space/learn/ по-умолчанию активен ползунок autoplay")
     public void autoPLaySliderCheck() {
         assertTrue(spacePage.IsSliderChecked(), "Слайдер autoplay не активен");
+    }
+
+    @Test
+    @DisplayName("Проверяем, что после выбора намецкого языка, загрузилась страница https://www.jetbrains.com/de-de/space/")
+    public void deutschUrlCheck() {
+        assertEquals("https://www.jetbrains.com/de-de/space/", spacePage.getDeutschUrl(), "Не перешли на https://www.jetbrains.com/de-de/space/");
+    }
+
+    @Test
+    @DisplayName("Проверяем, что после заполнения поля Feedback, отображается сообщение Großartig! Vielen Dank für Ihr Feedback!")
+    public void feedAnswerTextCheck() {
+        assertEquals("Großartig! Vielen Dank für Ihr Feedback!", spacePage.getFeedAnswerText(), "Сообщение не отображается.");
     }
 }

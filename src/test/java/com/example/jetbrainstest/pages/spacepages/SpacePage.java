@@ -21,6 +21,7 @@ public class SpacePage {
     private final AllureLogger LOG = new AllureLogger(LoggerFactory.getLogger(SpacePage.class));
     WebDriver driver;
     Actions actions;
+    JavascriptExecutor js;
 
     @FindBy(css = "[aria-label='Navigate to main page'][data-test='site-logo']")
     private WebElement logoButton;
@@ -84,6 +85,23 @@ public class SpacePage {
 
     @FindBy(xpath = "//*[text() = 'Resources']")
     private WebElement resourceLink;
+
+    // https://www.jetbrains.com/de-de/space/
+
+    @FindBy(css = "[data-testid='icon-buddy']")
+    private WebElement feedButton;
+
+    @FindBy(xpath = "//label[input[@aria-label='5']]")
+    private WebElement fiveSterne;
+
+    @FindBy(xpath = "//*[text() = 'Weiter']")
+    private WebElement weiterButton;
+
+    @FindBy(css = "[placeholder='Bitte hier eingeben …']")
+    private WebElement textField;
+
+    @FindBy(css = "h2.css-1k617m6")
+    private WebElement feedAnswerText;
 
     // https://www.jetbrains.com/space/download/
 
@@ -257,7 +275,6 @@ public class SpacePage {
         LOG.info("Запустили видео в окне плеера");
         driver.switchTo().frame(iframeVideoPlayer);
         Thread.sleep(1000);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("document.querySelector('video').playbackRate = 2;");
         LOG.info("Увеличили скорость воспроизведения до 2x");
         Thread.sleep(53000);
@@ -277,9 +294,38 @@ public class SpacePage {
         return !stateSlider.isEmpty();
     }
 
+    public void setDeutschLanguage() {
+        langMenuButton.click();
+        LOG.info("Кликнули по кнопке выбора языка");
+        actions.sendKeys(Keys.ARROW_DOWN);
+        actions.sendKeys(Keys.ENTER).perform();
+        LOG.info("Выбрали Deutsch");
+    }
+
+    public String getFeedAnswerText() {
+        setDeutschLanguage();
+        feedButton.click();
+        LOG.info("Нажали на закладку Feedback");
+        js.executeScript("arguments[0].click();", fiveSterne);
+        LOG.info("Ставим 5 звезд");
+        weiterButton.click();
+        LOG.info("Нажали на кнопку Weiter");
+        actions.moveToElement(textField).click().sendKeys("Gute Website!").build().perform();
+        LOG.info("Вводим в поле ввода текста 'Gute Website!'");
+        weiterButton.click();
+        LOG.info("Нажали на кнопку Weiter");
+        return feedAnswerText.getText();
+    }
+
+    public String getDeutschUrl() {
+        setDeutschLanguage();
+        return getCurrUrl();
+    }
+
     public SpacePage(WebDriver driver) {
         this.driver = driver;
         this.actions = new Actions(driver);
+        this.js = (JavascriptExecutor) driver;
         PageFactory.initElements(driver, this);
     }
 }
