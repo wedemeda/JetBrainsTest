@@ -1,6 +1,7 @@
 package com.example.jetbrainstest.pages.spacepages;
 
 import com.example.jetbrainstest.AllureLogger;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,6 +13,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.List;
 
 // page_url = https://www.jetbrains.com/space
 public class SpacePage {
@@ -26,7 +28,7 @@ public class SpacePage {
     @FindBy(css = "[aria-label='Developer Tools: Open submenu'][data-test='main-menu-item-action']")
     private WebElement devToolsButton;
 
-    @FindBy(css = "._mainSubmenu__content_6pz0jp_1")
+    @FindBy(css = "._mainMenuItemActive_1wrjvw2_71")
     private WebElement topMenu;
 
     @FindBy(css = "[aria-label='Team Tools: Open submenu'][data-test='main-menu-item-action']")
@@ -74,14 +76,21 @@ public class SpacePage {
     @FindBy(css = "div.wt-col-3:nth-child(1)")
     private WebElement secureBlock;
 
-    @FindBy(css = "a[class*='wt-link']")
-    private WebElement linkMoreSpace;
-
     @FindBy(css = "svg[class*='space-text-white']")
     private WebElement spaceButton;
 
     @FindBy(css = "a.menu-second__button:nth-child(2)")
     private WebElement signInButton;
+
+    @FindBy(xpath = "//*[text() = 'Resources']")
+    private WebElement resourceLink;
+
+    // https://www.jetbrains.com/space/download/
+
+    @FindBy(css = "a[class*='wt-link']")
+    private WebElement linkMoreSpace;
+
+    // https://www.jetbrains.com/space/app/login/
 
     @FindBy(css = "[data-test-id='… or use another email account']")
     private WebElement useEmailAccButton;
@@ -97,6 +106,23 @@ public class SpacePage {
 
     @FindBy(css = "[data-test-id='1A3-B56']")
     private WebElement inputTextField;
+
+    // https://www.jetbrains.com/space/learn/
+
+    @FindBy(css = ".wt-toggle__slider")
+    private WebElement autoPlaySlider;
+
+    @FindBy(css = ".wt-youtube-player")
+    private WebElement videoPlayer;
+
+    @FindBy(css = "iframe.wt-youtube-player__player")
+    private WebElement iframeVideoPlayer;
+
+    @FindBy(css = ".wt-youtube-player__player")
+    private WebElement nextVideoPlayer;
+
+    @FindBy(css = "input:checked+.wt-toggle__slider")
+    private List<WebElement> stateSlider;
 
     public void clickCookiesBannerButton() {
         cookiesBannerButton.click();
@@ -219,6 +245,36 @@ public class SpacePage {
         emailSubmitButton.click();
         LOG.info("Нажали на кнопку Continue with this email");
         return validErrorText.getText();
+    }
+
+    public void goToSpaceLernPage() {
+        resourceLink.click();
+        LOG.info("Перешли по ссылке Resource");
+    }
+
+    public String getTitleVideo() throws InterruptedException {
+        videoPlayer.click();
+        LOG.info("Запустили видео в окне плеера");
+        driver.switchTo().frame(iframeVideoPlayer);
+        Thread.sleep(1000);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("document.querySelector('video').playbackRate = 2;");
+        LOG.info("Увеличили скорость воспроизведения до 2x");
+        Thread.sleep(53000);
+        LOG.info("Ожидание конца видео");
+        driver.switchTo().defaultContent();
+        return nextVideoPlayer.getDomAttribute("title");
+    }
+
+    public String getEmtyTitleVideo() throws InterruptedException {
+        autoPlaySlider.click();
+        LOG.info("Выключили ползунок автовоспроизведения");
+        return getTitleVideo();
+    }
+
+    public Boolean IsSliderChecked() {
+        goToSpaceLernPage();
+        return !stateSlider.isEmpty();
     }
 
     public SpacePage(WebDriver driver) {

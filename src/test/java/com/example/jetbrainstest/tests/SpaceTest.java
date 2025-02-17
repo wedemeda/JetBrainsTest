@@ -122,4 +122,26 @@ public class SpaceTest extends BaseTest {
         assertEquals("Failed to check the email. Please try again later.",
                 spacePage.getErrorTextAfterEmptyEmailInput(), "Текст сообщения некорректен");
     }
+
+    @Test
+    @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, автоматически начинается воспроизведение следующего видео")
+    public void autoPlayVideoCheck() throws InterruptedException {
+        spacePage.goToSpaceLernPage();
+        assertEquals("Adding Content to a Git Repository", spacePage.getTitleVideo(),
+                "Второе видео не начало воспроизводиться");
+    }
+
+    @Test
+    @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, при выключенном ползунке autoplay " +
+            "не начинается автоматическое воспроизведение следующего видео")
+    public void autoNotPlayVideoCheck() throws InterruptedException {
+        spacePage.goToSpaceLernPage();
+        assertNull(spacePage.getEmtyTitleVideo(), "Второе видео начало воспроизводиться");
+    }
+
+    @Test
+    @DisplayName("Проверяем, что на странице https://www.jetbrains.com/space/learn/ по-умолчанию активен ползунок autoplay")
+    public void autoPLaySliderCheck() {
+        assertTrue(spacePage.IsSliderChecked(), "Слайдер autoplay не активен");
+    }
 }
