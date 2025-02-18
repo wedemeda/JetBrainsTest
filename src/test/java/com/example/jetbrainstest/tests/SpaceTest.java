@@ -83,7 +83,7 @@ public class SpaceTest extends BaseTest {
 
     @Test
     @DisplayName("Проверяем, что после нажатия на кнопку 'Learn how to review code from the IDE', " + "начинает воспроизводиться видео")
-    public void videoPlayedCheck() {
+    public void videoPlayedCheck() throws InterruptedException {
         assertTrue(spacePage.isLernVideoPlayed(), "Видео не воспроизводится.");
     }
 
@@ -107,7 +107,7 @@ public class SpaceTest extends BaseTest {
         assertEquals("Please enter a valid email address", spacePage.getErrorTextAfterNotValidEmailInput(email), "Текст сообщения некорректен");
     }
 
-    @ParameterizedTest
+    @ParameterizedTest()
     @MethodSource("com.example.jetbrainstest.EmailGenerator#randomEmails")
     @DisplayName("Проверка, что при вводе валидного email отображается поле для ввода кода подтверждения")
     public void inputTextFieldCheck(String email) {

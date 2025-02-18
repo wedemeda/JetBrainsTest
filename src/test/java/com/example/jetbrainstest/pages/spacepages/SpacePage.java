@@ -1,10 +1,7 @@
 package com.example.jetbrainstest.pages.spacepages;
 
 import com.example.jetbrainstest.AllureLogger;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -71,7 +68,7 @@ public class SpacePage {
     @FindBy(xpath = "//iframe[contains(@src, 'youtube.com/embed')]")
     private WebElement iframeYoPlayer;
 
-    @FindBy(css = "button[data-title-no-tooltip='Pause']")
+    @FindBy(css = ".ytp-play-button")
     private WebElement pauseButton;
 
     @FindBy(css = "div.wt-col-3:nth-child(1)")
@@ -126,6 +123,9 @@ public class SpacePage {
     private WebElement inputTextField;
 
     // https://www.jetbrains.com/space/learn/
+
+    @FindBy(xpath = "//*[text() = 'Latest Space blog posts']")
+    private  WebElement textUnderVideo;
 
     @FindBy(css = ".wt-toggle__slider")
     private WebElement autoPlaySlider;
@@ -211,12 +211,13 @@ public class SpacePage {
         return driver.getCurrentUrl();
     }
 
-    public Boolean isLernVideoPlayed() {
+    public Boolean isLernVideoPlayed() throws InterruptedException {
         learnVideoButton.click();
         LOG.info("Кликнули по иконке, вызывающей обучающее видео");
         driver.switchTo().frame(iframeYoPlayer);
         LOG.info("Переключаемся в iframe с видео плеером");
-        return pauseButton.isDisplayed();
+        String titleText = pauseButton.getDomAttribute("data-title-no-tooltip");
+        return (titleText.equals("Pause")) || (titleText.equals("Пауза"));
     }
 
     public String getGradientBackground() {
@@ -273,6 +274,7 @@ public class SpacePage {
     public String getTitleVideo() throws InterruptedException {
         videoPlayer.click();
         LOG.info("Запустили видео в окне плеера");
+        actions.moveToElement(textUnderVideo).perform();
         driver.switchTo().frame(iframeVideoPlayer);
         Thread.sleep(1000);
         js.executeScript("document.querySelector('video').playbackRate = 2;");
