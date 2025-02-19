@@ -83,7 +83,7 @@ public class SpaceTest extends BaseTest {
 
     @Test
     @DisplayName("Проверяем, что после нажатия на кнопку 'Learn how to review code from the IDE', " + "начинает воспроизводиться видео")
-    public void videoPlayedCheck() throws InterruptedException {
+    public void videoPlayedCheck() {
         assertTrue(spacePage.isLernVideoPlayed(), "Видео не воспроизводится.");
     }
 
@@ -124,7 +124,7 @@ public class SpaceTest extends BaseTest {
     @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, " + "автоматически начинается воспроизведение следующего видео")
     public void autoPlayVideoCheck() throws InterruptedException {
         spacePage.goToSpaceLernPage();
-        assertEquals("Adding Content to a Git Repository", spacePage.getTitleVideo(), "Второе видео не начало воспроизводиться");
+        assertTrue(spacePage.isNeuTitle(), "Второе видео не начало воспроизводиться");
     }
 
     @Test

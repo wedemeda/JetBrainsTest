@@ -125,7 +125,7 @@ public class SpacePage {
     // https://www.jetbrains.com/space/learn/
 
     @FindBy(xpath = "//*[text() = 'Latest Space blog posts']")
-    private  WebElement textUnderVideo;
+    private WebElement textUnderVideo;
 
     @FindBy(css = ".wt-toggle__slider")
     private WebElement autoPlaySlider;
@@ -137,7 +137,7 @@ public class SpacePage {
     private WebElement iframeVideoPlayer;
 
     @FindBy(css = ".wt-youtube-player__player")
-    private WebElement nextVideoPlayer;
+    private WebElement learnVideoPlayer;
 
     @FindBy(css = "input:checked+.wt-toggle__slider")
     private List<WebElement> stateSlider;
@@ -211,12 +211,13 @@ public class SpacePage {
         return driver.getCurrentUrl();
     }
 
-    public Boolean isLernVideoPlayed() throws InterruptedException {
+    public Boolean isLernVideoPlayed() {
         learnVideoButton.click();
         LOG.info("Кликнули по иконке, вызывающей обучающее видео");
         driver.switchTo().frame(iframeYoPlayer);
         LOG.info("Переключаемся в iframe с видео плеером");
         String titleText = pauseButton.getDomAttribute("data-title-no-tooltip");
+        assert titleText != null;
         return (titleText.equals("Pause")) || (titleText.equals("Пауза"));
     }
 
@@ -271,24 +272,45 @@ public class SpacePage {
         LOG.info("Перешли по ссылке Resource");
     }
 
-    public String getTitleVideo() throws InterruptedException {
+    public void increaseVideoSpeed() throws InterruptedException {
+        Thread.sleep(1000);
+        js.executeScript("document.querySelector('video').playbackRate = 2;");
+        LOG.info("Увеличили скорость воспроизведения до 2x");
+    }
+
+    public void startedVideoPlayer() {
         videoPlayer.click();
         LOG.info("Запустили видео в окне плеера");
         actions.moveToElement(textUnderVideo).perform();
         driver.switchTo().frame(iframeVideoPlayer);
-        Thread.sleep(1000);
-        js.executeScript("document.querySelector('video').playbackRate = 2;");
-        LOG.info("Увеличили скорость воспроизведения до 2x");
+    }
+
+    public String getTitleVideo() throws InterruptedException {
+        startedVideoPlayer();
+        increaseVideoSpeed();
         Thread.sleep(53000);
         LOG.info("Ожидание конца видео");
         driver.switchTo().defaultContent();
-        return nextVideoPlayer.getDomAttribute("title");
+        return learnVideoPlayer.getDomAttribute("title");
     }
 
     public String getEmtyTitleVideo() throws InterruptedException {
         autoPlaySlider.click();
         LOG.info("Выключили ползунок автовоспроизведения");
         return getTitleVideo();
+    }
+
+    public Boolean isNeuTitle() throws InterruptedException {
+        startedVideoPlayer();
+        driver.switchTo().defaultContent();
+        String first_Title = learnVideoPlayer.getDomAttribute("title");
+        driver.switchTo().frame(iframeVideoPlayer);
+        increaseVideoSpeed();
+        Thread.sleep(53000);
+        LOG.info("Ожидание конца видео");
+        driver.switchTo().defaultContent();
+        String neuTitle = learnVideoPlayer.getDomAttribute("title");
+        return (neuTitle != null && !neuTitle.equals(first_Title));
     }
 
     public Boolean IsSliderChecked() {
