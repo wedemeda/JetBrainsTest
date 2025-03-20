@@ -122,16 +122,16 @@ public class SpaceTest extends BaseTest {
 
     @Test
     @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, " + "автоматически начинается воспроизведение следующего видео")
-    public void autoPlayVideoCheck() throws InterruptedException {
+    public void autoPlayVideoCheck() {
         spacePage.goToSpaceLernPage();
         assertTrue(spacePage.isNeuTitle(), "Второе видео не начало воспроизводиться");
     }
 
     @Test
     @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, при выключенном ползунке autoplay " + "не начинается автоматическое воспроизведение следующего видео")
-    public void autoNotPlayVideoCheck() throws InterruptedException {
+    public void autoNotPlayVideoCheck() {
         spacePage.goToSpaceLernPage();
-        assertNull(spacePage.getEmtyTitleVideo(), "Второе видео начало воспроизводиться");
+        assertNull(spacePage.getEmptyTitle(), "Второе видео начало воспроизводиться");
     }
 
     @Test

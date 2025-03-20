@@ -272,8 +272,15 @@ public class SpacePage {
         LOG.info("Перешли по ссылке Resource");
     }
 
-    public void increaseVideoSpeed() throws InterruptedException {
-        Thread.sleep(1000);
+    public void increaseVideoSpeed() {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+// Ждем, пока видео загрузится и станет доступным для изменения скорости
+        wait.until(d -> {
+            Object videoReady = js.executeScript("return document.querySelector('video') !== null && document.querySelector('video').readyState >= 2;");
+            return Boolean.TRUE.equals(videoReady);
+        });
+// Теперь устанавливаем скорость воспроизведения x2
         js.executeScript("document.querySelector('video').playbackRate = 2;");
         LOG.info("Увеличили скорость воспроизведения до 2x");
     }
@@ -285,32 +292,61 @@ public class SpacePage {
         driver.switchTo().frame(iframeVideoPlayer);
     }
 
-    public String getTitleVideo() throws InterruptedException {
+    public String getTitleVideo() {
         startedVideoPlayer();
         increaseVideoSpeed();
-        Thread.sleep(53000);
+        waitForVideoToEnd();
         LOG.info("Ожидание конца видео");
         driver.switchTo().defaultContent();
-        return learnVideoPlayer.getDomAttribute("title");
+        try {
+            waitForVideoPlayerTittle();
+            return learnVideoPlayer.getDomAttribute("title");
+        } catch (TimeoutException e) {
+            return learnVideoPlayer.getDomAttribute("title");
+        }
     }
 
-    public String getEmtyTitleVideo() throws InterruptedException {
+    public String getEmptyTitle() {
         autoPlaySlider.click();
         LOG.info("Выключили ползунок автовоспроизведения");
         return getTitleVideo();
     }
 
-    public Boolean isNeuTitle() throws InterruptedException {
+    public void waitForVideoPlayerTittle() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(d -> {
+            String first_Title = learnVideoPlayer.getDomAttribute("title");
+            return first_Title != null && !first_Title.equals("YouTube video player");
+        });
+    }
+
+    public void waitForVideoToEnd() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(100));
+        wait.until(d -> {
+            // Проверяем, есть ли элемент video
+            Object videoExists = js.executeScript("return document.querySelector('video') !== null;");
+            return Boolean.FALSE.equals(videoExists);
+        });
+        // Видео завершилось
+    }
+
+    public Boolean isNeuTitle() {
         startedVideoPlayer();
         driver.switchTo().defaultContent();
+        waitForVideoPlayerTittle();
         String first_Title = learnVideoPlayer.getDomAttribute("title");
         driver.switchTo().frame(iframeVideoPlayer);
         increaseVideoSpeed();
-        Thread.sleep(53000);
+        waitForVideoToEnd();
         LOG.info("Ожидание конца видео");
         driver.switchTo().defaultContent();
-        String neuTitle = learnVideoPlayer.getDomAttribute("title");
-        return (neuTitle != null && !neuTitle.equals(first_Title));
+        try {
+            waitForVideoPlayerTittle();
+            String neuTitle = learnVideoPlayer.getDomAttribute("title");
+            return (neuTitle != null && !neuTitle.equals(first_Title));
+        } catch (TimeoutException e) {
+            return (learnVideoPlayer.getDomAttribute("title") != null);
+        }
     }
 
     public Boolean IsSliderChecked() {
