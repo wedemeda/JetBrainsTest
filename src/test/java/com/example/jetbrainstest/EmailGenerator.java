@@ -2,6 +2,7 @@ package com.example.jetbrainstest;
 
 import java.util.stream.Stream;
 
+@SuppressWarnings("unused")
 public class EmailGenerator {
 
     public static Stream<String> randomEmails() {

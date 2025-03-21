@@ -29,7 +29,8 @@ public class SpaceTest extends BaseTest {
     @DisplayName("Проверяем, что по клику кнопки лого осуществляется переход на главную страницу https://www.jetbrains.com/")
     public void buttonCheck() {
         spacePage.clickLogoButton();
-        assertEquals("https://www.jetbrains.com/", spacePage.getCurrUrl(), "Не перешли на https://www.jetbrains.com/");
+        assertEquals("https://www.jetbrains.com/", spacePage.getCurrUrl(),
+                "Не перешли на https://www.jetbrains.com/");
     }
 
     @Test
@@ -41,13 +42,15 @@ public class SpaceTest extends BaseTest {
     @Test
     @DisplayName("Проверяем, что при нажатии на кнопку Developer Tools отображается меню")
     public void displayedMenuAfterClickCheck() {
-        assertTrue(spacePage.isDisplTopMenu(), "Меню не отображается");
+        assertTrue(spacePage.isDisplayedTopMenu(), "Меню не отображается");
     }
 
     @Test
-    @DisplayName("Проверям, что при наведении фокуса на кнопку Team Tools, " + "её текст становится белого цвета (Отключается прозрачность).")
+    @DisplayName("Проверям, что при наведении фокуса на кнопку Team Tools, " +
+            "её текст становится белого цвета (Отключается прозрачность).")
     public void onFocusColorTeamToolButtonCheck() {
-        assertEquals("1", spacePage.getOpacityOnFocusTeamToolsButton(), "Кнопка Developer Team Tools осталась серого цвета.");
+        assertEquals("1", spacePage.getOpacityOnFocusTeamToolsButton(),
+                "Кнопка Developer Team Tools осталась серого цвета.");
     }
 
     @Test
@@ -66,29 +69,35 @@ public class SpaceTest extends BaseTest {
     @DisplayName("Проверяем, что по комбинации CTRL+k открывается страница поиска  https://www.jetbrains.com/space/?s=full")
     public void searchPageCheck() {
         spacePage.goSearchPage();
-        assertEquals("https://www.jetbrains.com/space/?s=full", spacePage.getCurrUrl(), "Не перешли на https://www.jetbrains.com/space/?s=full");
+        assertEquals("https://www.jetbrains.com/space/?s=full", spacePage.getCurrUrl(),
+                "Не перешли на https://www.jetbrains.com/space/?s=full");
     }
 
     @Test
-    @DisplayName("Проверям текст подсказки  в строке поиска")
+    @DisplayName("Проверям текст подсказки в строке поиска")
     public void textSearchFieldCheck() {
-        assertEquals("Ctrl+K for advanced search", spacePage.getSearchFieldText(), "Текст подсказки не соответсвует проверяемому.");
+        assertEquals("Ctrl+K for advanced search", spacePage.getSearchFieldText(),
+                "Текст подсказки не соответсвует проверяемому.");
     }
 
     @Test
     @DisplayName("Проверяем, что кнопка On-Premises прозрачная.")
-    public void colorOnPremisButtonCheck() {
-        assertEquals("rgba(0, 0, 0, 0)", spacePage.getColorOnPremisButton(), "Кнопка On-Premises не прозрачная.");
+    public void colorOnPremiseButtonCheck() {
+        assertEquals("rgba(0, 0, 0, 0)", spacePage.getColorOnPremiseButton(),
+                "Кнопка On-Premises не прозрачная.");
     }
 
     @Test
-    @DisplayName("Проверяем, что после нажатия на кнопку 'Learn how to review code from the IDE', " + "начинает воспроизводиться видео")
+    @DisplayName("Проверяем, что после нажатия на кнопку 'Learn how to review code from the IDE', " +
+             "начинает воспроизводиться видео")
     public void videoPlayedCheck() {
-        assertTrue(spacePage.isLernVideoPlayed(), "Видео не воспроизводится.");
+        assertTrue(spacePage.isLernVideoPlayed(),
+                "Видео не воспроизводится.");
     }
 
     @Test
-    @DisplayName("Проверяем, что при установке фокуса на блоке 'Keep complete control over your data in a secure environment' " + "страницы https://www.jetbrains.com/space/download/  появляется градиент фона.")
+    @DisplayName("Проверяем, что при установке фокуса на блоке 'Keep complete control over your data in a secure environment' " +
+            "страницы https://www.jetbrains.com/space/download/  появляется градиент фона.")
     public void gradientBackgroundCheck() {
         assertNotEquals("none", spacePage.getGradientBackground(), "Градиент фона не появляется.");
     }
@@ -97,14 +106,16 @@ public class SpaceTest extends BaseTest {
     @DisplayName("Проверяем, что после нажатия на кнопкy Space происходит загрузка страницы https://www.jetbrains.com/space/")
     public void spacePageCheck() {
         spacePage.spaceButtonClick();
-        assertEquals("https://www.jetbrains.com/space/", spacePage.getCurrUrl(), "Не перешли на https://www.jetbrains.com/space/");
+        assertEquals("https://www.jetbrains.com/space/", spacePage.getCurrUrl(),
+                "Не перешли на https://www.jetbrains.com/space/");
     }
 
     @ParameterizedTest(name = "#{index} - проверка с email {0}")
     @CsvSource({"test", "test@", "test@test"})
     @DisplayName("Проверяем, что при вводе не валидного email отображается текст ошибки: Please enter a valid email address")
     public void errorTextAfterNotValidEmailCheck(String email) {
-        assertEquals("Please enter a valid email address", spacePage.getErrorTextAfterNotValidEmailInput(email), "Текст сообщения некорректен");
+        assertEquals("Please enter a valid email address", spacePage.getErrorTextAfterNotValidEmailInput(email),
+                "Текст сообщения некорректен");
     }
 
     @ParameterizedTest()
@@ -115,20 +126,24 @@ public class SpaceTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Проверяем, что при нажатии на кнопку Continue with this email с пустым полем email " + "отображается текст ошибки: Failed to check the email. Please try again later.")
+    @DisplayName("Проверяем, что при нажатии на кнопку Continue with this email с пустым полем email " +
+            "отображается текст ошибки: Failed to check the email. Please try again later.")
     public void errorTextAfterEmptyEmailCheck() {
-        assertEquals("Failed to check the email. Please try again later.", spacePage.getErrorTextAfterEmptyEmailInput(), "Текст сообщения некорректен");
+        assertEquals("Failed to check the email. Please try again later.", spacePage.getErrorTextAfterEmptyEmailInput(),
+                "Текст сообщения некорректен");
     }
 
     @Test
-    @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, " + "автоматически начинается воспроизведение следующего видео")
+    @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, " +
+            "автоматически начинается воспроизведение следующего видео")
     public void autoPlayVideoCheck() {
         spacePage.goToSpaceLernPage();
         assertTrue(spacePage.isNeuTitle(), "Второе видео не начало воспроизводиться");
     }
 
     @Test
-    @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, при выключенном ползунке autoplay " + "не начинается автоматическое воспроизведение следующего видео")
+    @DisplayName("Проверяем, что при завершении воспроизведения видео в плеере, при выключенном ползунке autoplay " +
+            "не начинается автоматическое воспроизведение следующего видео")
     public void autoNotPlayVideoCheck() {
         spacePage.goToSpaceLernPage();
         assertNull(spacePage.getEmptyTitle(), "Второе видео начало воспроизводиться");
@@ -143,12 +158,15 @@ public class SpaceTest extends BaseTest {
     @Test
     @DisplayName("Проверяем, что после выбора намецкого языка, загрузилась страница https://www.jetbrains.com/de-de/space/")
     public void deutschUrlCheck() {
-        assertEquals("https://www.jetbrains.com/de-de/space/", spacePage.getDeutschUrl(), "Не перешли на https://www.jetbrains.com/de-de/space/");
+        assertEquals("https://www.jetbrains.com/de-de/space/", spacePage.getDeutschUrl(),
+                "Не перешли на https://www.jetbrains.com/de-de/space/");
     }
 
     @Test
-    @DisplayName("Проверяем, что после заполнения поля Feedback, отображается сообщение Großartig! Vielen Dank für Ihr Feedback!")
+    @DisplayName("Проверяем, что в немецкой версии сайта после заполнения поля Feedback," +
+            "отображается сообщение Großartig! Vielen Dank für Ihr Feedback!")
     public void feedAnswerTextCheck() {
-        assertEquals("Großartig! Vielen Dank für Ihr Feedback!", spacePage.getFeedAnswerText(), "Сообщение не отображается.");
+        assertEquals("Großartig! Vielen Dank für Ihr Feedback!", spacePage.getFeedAnswerText(),
+                "Сообщение не отображается.");
     }
 }

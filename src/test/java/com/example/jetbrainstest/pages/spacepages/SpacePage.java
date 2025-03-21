@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 
 // page_url = https://www.jetbrains.com/space
 public class SpacePage {
@@ -26,7 +27,8 @@ public class SpacePage {
     @FindBy(css = "[aria-label='Developer Tools: Open submenu'][data-test='main-menu-item-action']")
     private WebElement devToolsButton;
 
-    @FindBy(css = "._mainMenuItemActive_1wrjvw2_71")
+    //    @FindBy(css = "._mainMenuItemActive_1wrjvw2_71")
+    @FindBy(xpath = "//div[@data-test-marker='Developer Tools']")
     private WebElement topMenu;
 
     @FindBy(css = "[aria-label='Team Tools: Open submenu'][data-test='main-menu-item-action']")
@@ -57,12 +59,12 @@ public class SpacePage {
     private WebElement searchField;
 
     @FindBy(xpath = "//*[text()='On-Premises']")
-    private WebElement onPremisButton;
+    private WebElement onPremiseButton;
 
     @FindBy(css = "[data-jetbrains-cookies-banner-action='ACCEPT_ALL']")
     private WebElement cookiesBannerButton;
 
-    @FindBy(xpath = "//button[contains(text(), 'Learn how to review code from the IDE')]")
+    @FindBy(xpath = "//span[contains(text(), 'Learn how to review code from the IDE')]")
     private WebElement learnVideoButton;
 
     @FindBy(xpath = "//iframe[contains(@src, 'youtube.com/embed')]")
@@ -156,10 +158,10 @@ public class SpacePage {
         return devToolsButton.isDisplayed();
     }
 
-    public Boolean isDisplTopMenu() {
+    public Boolean isDisplayedTopMenu() {
         devToolsButton.click();
         LOG.info("Кликнули по кнопке " + devToolsButton.getText());
-        return topMenu.isDisplayed();
+        return Objects.requireNonNull(topMenu.getDomAttribute("class")).contains("mainMenuItemActive");
     }
 
     public String getOpacityOnFocusTeamToolsButton() {
@@ -203,8 +205,8 @@ public class SpacePage {
         return searchField.getDomAttribute("placeholder");
     }
 
-    public String getColorOnPremisButton() {
-        return onPremisButton.getCssValue("background-color");
+    public String getColorOnPremiseButton() {
+        return onPremiseButton.getCssValue("background-color");
     }
 
     public String getCurrUrl() {
@@ -222,7 +224,7 @@ public class SpacePage {
     }
 
     public String getGradientBackground() {
-        onPremisButton.click();
+        onPremiseButton.click();
         LOG.info("Кликнули по кнопке On-Premises");
         actions.moveToElement(linkMoreSpace).perform();
         LOG.info("Скроллим к блоку " + secureBlock.getText());
@@ -243,6 +245,8 @@ public class SpacePage {
         LOG.info("Нажали на кнопку … or use another email account");
         emailInput.sendKeys(email);
         LOG.info("Ввели email " + email + " в поле ввода");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(emailSubmitButton));
         emailSubmitButton.click();
         LOG.info("Нажали на кнопку Continue with this email");
     }
