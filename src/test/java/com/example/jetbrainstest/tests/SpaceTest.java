@@ -104,7 +104,7 @@ public class SpaceTest extends BaseTest {
 
     @Test
     @DisplayName("Проверяем, что после нажатия на кнопкy Space происходит загрузка страницы https://www.jetbrains.com/space/")
-    public void spacePageCheck() {
+    public void spaceButtonCheck() {
         spacePage.spaceButtonClick();
         assertEquals("https://www.jetbrains.com/space/", spacePage.getCurrUrl(),
                 "Не перешли на https://www.jetbrains.com/space/");
